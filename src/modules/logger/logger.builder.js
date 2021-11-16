@@ -16,6 +16,7 @@ class LoggerBuilder {
       type: this.properties.type,
       message: this.properties.message,
       thread: this.properties.thread,
+      metadata: this.properties.metadata,
       ip: this.properties.ip,
     });
   }

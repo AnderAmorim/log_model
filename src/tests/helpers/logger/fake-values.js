@@ -156,7 +156,7 @@ const mockCalledLogWithoutInfos = () => {
   return {
     severity: 'info',
     application: 'pegakienvios-core',
-    aplication_secondary: undefined,
+    application_secondary: undefined,
     class: 'ShipmentOrdeService',
     type: 'request',
     message: 'Foi criada uma nova ordem de envio pelo usuário 1234 com o produto 4321, onde foi escolhida a transportadora X.',
@@ -215,7 +215,7 @@ const mockReturnPropriertiesValues = () => {
   return {
     severity: 'info',
     application: 'pegakienvios-core',
-    aplication_secondary: undefined,
+    application_secondary: undefined,
     class: 'ShipmentOrdeService',
     type: 'request',
     message: 'Foi criada uma nova ordem de envio pelo usuário 1234 com o produto 4321, onde foi escolhida a transportadora X.',

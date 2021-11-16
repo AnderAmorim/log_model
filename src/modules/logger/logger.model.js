@@ -1,8 +1,8 @@
 class Logger {
-  constructor({ severity, application, aplication_secondary, className, type, data, message, thread, metadata, ip }) {
+  constructor({ severity, application, application_secondary, className, type, data, message, thread, metadata, ip }) {
     this.severity = severity;
     this.application = application;
-    this.aplication_secondary = aplication_secondary;
+    this.application_secondary = application_secondary;
     this.className = className;
     this.type = type;
     this.message = message;
@@ -12,8 +12,8 @@ class Logger {
   }
 
   returnPropriertiesValues() {
-    const { severity, application, aplication_secondary, className, type, message, thread, metadata, ip } = this;
-    return { severity, application, aplication_secondary, class: className, type, message, thread, metadata, ip };
+    const { severity, application, application_secondary, className, type, message, thread, metadata, ip } = this;
+    return { severity, application, application_secondary, class: className, type, message, thread, metadata, ip };
   }
 }
 

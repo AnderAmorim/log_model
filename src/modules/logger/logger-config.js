@@ -28,10 +28,10 @@ class LoggerConfig {
     winston.addColors(myCustomLevels.colors);
     this.logger = winston.createLogger(logConfiguration);
   }
-  log({ severity, application, aplication_secondary, className, type, message, thread, metadata, ip }) {
+  log({ severity, application, application_secondary, className, type, message, thread, metadata, ip }) {
     const timestamp = new Date().toISOString();
     const span = `${application}-${timestamp}`;
-    const add_secondary_trace = aplication_secondary ? `-${aplication_secondary}-${timestamp}` : '';
+    const add_secondary_trace = application_secondary ? `-${application_secondary}-${timestamp}` : '';
     const trace = `${span}${add_secondary_trace}`;
     let dataInfo = {};
     if (ip) {
