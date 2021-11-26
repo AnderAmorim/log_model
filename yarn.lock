@@ -2,6 +2,16 @@
 # yarn lockfile v1
 
 
+"@anderamorim/log_model@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@anderamorim/log_model/-/log_model-0.0.7.tgz#00d6f9d78a222bee0a8a96556e817ea3151936cf"
+  integrity sha512-t0w6HvH+0n3+MR4jwveIKXjcjxeetAfOlo3Pf6HOJ2KqYpcBArYKcPLxVaVCaAyhEi7mxcc4IYmIuGTYDMoFXQ==
+  dependencies:
+    geoip-lite "^1.4.2"
+    jest-when "^3.4.2"
+    uuid "^8.3.2"
+    winston "^3.3.3"
+
 "@dabh/diagnostics@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@dabh/diagnostics/-/diagnostics-2.0.2.tgz#290d08f7b381b8f94607dc8f471a12c675f9db31"
