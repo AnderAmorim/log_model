@@ -1,10 +1,10 @@
 const winston = require('winston');
 const {consts_winstown} = require('../constants/winstow-configs');
-var geoip = require('geoip-lite');
+const geoip = require('geoip-lite');
 
 class NelsonRubensService{
   automaticInfos({ip}){
-    let dataInfo = {};
+    const dataInfo = {};
     if (ip) {
       dataInfo.ip = ip;
       var geo = geoip.lookup(ip);
@@ -23,7 +23,7 @@ class NelsonRubensService{
     this.logger = winston.createLogger(logConfiguration);
     const {dataInfo} = this.automaticInfos({ip});
     this.severity = severity;
-    this.props = {
+    this.logContent = {
       application,
       timestamp,
       class_name,
@@ -31,18 +31,20 @@ class NelsonRubensService{
       errors_infos,
       trace,
       span,
-      thread,
       metadata:{ ...dataInfo, ...metadata },
     }
     if(message){
-      this.props.message = message
+      this.logContent.message = message
     }
     if(errors_infos){
-      this.props.errors_infos = errors_infos
+      this.logContent.errors_infos = errors_infos
+    }
+    if(thread){
+      this.logContent.thread = thread
     }
   }
   log(){
-    this.logger[this.severity](this.props);
+    this.logger[this.severity](this.logContent);
   }
 }
 
