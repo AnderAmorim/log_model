@@ -1,5 +1,4 @@
 const { validValuesTypes } = require('../constants/valid-values-types');
-const { RequiredPropertyError, InvalidPropertyError } = require('../errors');
 
 module.exports = {
   propriertiesValidation(proprierties = {}, error = false) {
@@ -8,26 +7,26 @@ module.exports = {
       return valid.length > 0;
     };
     if (!proprierties.application) {
-      throw new RequiredPropertyError({ message: 'application is required' });
+      return;
     }
     if (!proprierties.class_name) {
-      throw new RequiredPropertyError({ message: 'class_name is required' });
+      return;
     }
     if (!proprierties.type) {
-      throw new RequiredPropertyError({ message: 'type is required' });
+      return;
     }
     
     if (!proprierties.thread) {
-      throw new RequiredPropertyError({ message: 'thread is required' });
+      return;
     }
     if (!typeValidation(proprierties.type)) {
-      throw new InvalidPropertyError({ message: 'invalid value for type' });
+      return;
     }
     if (!error && !proprierties.message) {
-      throw new RequiredPropertyError({ message: 'message is required' });
+      return;
     }
     if (error && !proprierties.errors_infos) {
-      throw new RequiredPropertyError({ message: 'errors_infos is required' });
+      return;
     }
   },
 };

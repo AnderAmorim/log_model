@@ -2,14 +2,12 @@
 # yarn lockfile v1
 
 
-"@anderamorim/log_model@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@anderamorim/log_model/-/log_model-0.0.7.tgz#00d6f9d78a222bee0a8a96556e817ea3151936cf"
-  integrity sha512-t0w6HvH+0n3+MR4jwveIKXjcjxeetAfOlo3Pf6HOJ2KqYpcBArYKcPLxVaVCaAyhEi7mxcc4IYmIuGTYDMoFXQ==
+"@anderamorim/log_model@^0.0.8":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@anderamorim/log_model/-/log_model-0.0.8.tgz#d8cc4e6b8ea0f4b550e1cbfe920ae691cf7d928a"
+  integrity sha512-NP3JfbtBKL8b74mZ/pkrj9YkV8fyFO4un0ZTRCcgpSssxeTLRnpAWwOLYmY116Jr55yNpg+XhpdvGIal/MvX0w==
   dependencies:
     geoip-lite "^1.4.2"
-    jest-when "^3.4.2"
-    uuid "^8.3.2"
     winston "^3.3.3"
 
 "@dabh/diagnostics@^2.0.2":
@@ -374,11 +372,6 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=
-
-uuid@^8.3.2:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
-  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 winston-transport@^4.4.0:
   version "4.4.0"
