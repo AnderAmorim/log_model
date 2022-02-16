@@ -1,0 +1,17 @@
+exclude: '^scripts/.*|^CHANGELOG.md'
+repos:
+  - repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v2.5.0
+    verbose: true
+    hooks:
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-yaml
+        args:
+          - --allow-multiple-documents
+      - id: detect-private-key
+      - id: pretty-format-json
+        args:
+          - --autofix
+      - id: trailing-whitespace
+      - id: detect-private-key

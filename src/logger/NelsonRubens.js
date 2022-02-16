@@ -1,33 +1,119 @@
 const { validTimezones } = require('../validations/valid_timezones');
 const NelsonRubensService = require('./NelsonRubensService');
-class NelsonRubens{
-  constructor({timezone="America/Sao_Paulo"}={}){
-    const timeZone = validTimezones(timezone)?timezone:'America/Sao_Paulo';
-    this.timestamp = new Date().toLocaleString("pt-BR", {timeZone})
+const Slack = require('../integrations/slack');
+
+class NelsonRubens {
+  constructor({ timezone = 'America/Sao_Paulo', application='unknown', className='unknown' } = {}) {
+    this.timeZone = validTimezones(timezone) ? timezone : 'America/Sao_Paulo';
+
+    this.application = application;
+    this.className = className;
+    this.service = new NelsonRubensService();
+    this.slack = new Slack();
   }
-  
-  info({application, class_name, type, message, trace, span, metadata, ip}){
-    const service = new NelsonRubensService({severity:'info',application, timestamp:this.timestamp, class_name, type, message, trace, span, metadata, ip})
-    service.log()
+
+  #isStatusTypeAvailable({ severity, message, errorsInfos }) {
+    if (Object.keys(errorsInfos).length) {
+      return ['fatal', 'error', 'warn'].includes(severity);
+    }
+
+    if (message.length) {
+      return ['silent', 'debug', 'info', 'warn'].includes(severity);
+    }
   }
-  fatal({application, class_name, type, errors_infos, trace, span, thread, metadata, ip}){
-    const service = new NelsonRubensService({severity:'fatal',application, timestamp:this.timestamp, class_name, type, errors_infos, trace, span, thread, metadata, ip})
-    service.log()
+
+  #generateTimestamp() {
+    let tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    let localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, -1);
+
+    return localISOTime;
   }
-  error({application, class_name, type, errors_infos, trace, span, thread, metadata, ip}){
-    const service = new NelsonRubensService({severity:'error',application, timestamp:this.timestamp, class_name, type, errors_infos, trace, span, thread, metadata, ip})
-    service.log()
+
+  #cleanAuthorizationHeader({ metadata: { headers }}) {
+    if (!headers) {
+      return;
+    }
+
+    const props = {...headers};
+
+    if ('authorization' in props) {
+      delete props['authorization'];
+    }
+
+    if ('apikey' in props) {
+      delete props['apikey'];
+    }
+
+    return props;
   }
-  warn({application, class_name, type, message, trace, span, metadata, ip}){
-    const service = new NelsonRubensService({severity:'warn',application, timestamp:this.timestamp, class_name, type, message, trace, span, metadata, ip})
-    service.log()
+
+  async #log({
+    severity='debug',
+    application,
+    className,
+    type,
+    message='',
+    data={},
+    errorsInfos={},
+    trace,
+    span,
+    thread,
+    metadata={},
+    ip,
+    notify=false,
+  }={}) {
+    if (severity === 'silent') {
+      severity = 'debug';
+    }
+
+    if (!this.#isStatusTypeAvailable({ severity, message, errorsInfos })) {
+      console.log('[logger][WARN] Invalid status severity or message');
+    }
+
+    this.timestamp = this.#generateTimestamp();
+
+    const handledMetadata = this.#cleanAuthorizationHeader({ metadata });
+
+    if (!span) {
+      span = `${this.application}-${this.className}-${this.timestamp}`;
+    }
+
+    if (!trace) {
+      trace = `${this.application}-${this.className}-${this.timestamp}`;
+    }
+
+    const dataLog = {
+      severity,
+      application: application ? application : this.application,
+      timestamp: this.timestamp,
+      className: className ? className : this.className,
+      type,
+      message,
+      data,
+      errorsInfos,
+      trace,
+      span,
+      thread,
+      metadata: handledMetadata,
+      thread,
+      ip,
+      notify,
+    };
+
+    this.service.log(dataLog);
+
+    if (notify) {
+      await this.slack.notify(dataLog);
+    }
   }
-  debug({application, class_name, type, message, trace, span, metadata, ip}){
-    const service = new NelsonRubensService({severity:'debug',application, timestamp:this.timestamp, class_name, type, message, trace, span, metadata, ip})
-    service.log()
-  }
-  silent({application, class_name, type, message, trace, span, metadata, ip}){
-  }
+
+  debug(hook) { this.#log({ severity: 'debug', ...hook}) };
+  info(hook) { this.#log({ severity: 'info', ...hook}) };
+  warn(hook) { this.#log({ severity: 'warn', ...hook}) };
+  error(hook) { this.#log({ severity: 'error', ...hook}) };
+  fatal(hook) { this.#log({ severity: 'fatal', ...hook}) };
+  silent(hook) { this.#log({ severity: 'silent', ...hook}) };
+
 }
 
 module.exports = NelsonRubens;

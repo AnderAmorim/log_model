@@ -1,2 +1,6 @@
 const NelsonRubens = require('./src/logger/NelsonRubens');
-module.exports = NelsonRubens;
+const NelsonRubensTypes = require('./src/logger/NelsonRubensTypes')
+module.exports = {
+  NelsonRubens,
+  NelsonRubensTypes
+}

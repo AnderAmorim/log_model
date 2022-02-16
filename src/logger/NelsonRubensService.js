@@ -1,50 +1,70 @@
-const winston = require('winston');
-const {consts_winstown} = require('../constants/winstow-configs');
 const geoip = require('geoip-lite');
+const winston = require('winston');
+const { consts_winstown: { levels } } = require('../constants/winstow-configs');
 
-class NelsonRubensService{
-  automaticInfos({ip}){
+class NelsonRubensService {
+  automaticInfos({ ip }) {
     const dataInfo = {};
+
     if (ip) {
       dataInfo.ip = ip;
-      var geo = geoip.lookup(ip);
-      dataInfo.geo = geo;
+      dataInfo.geo = geoip.lookup(ip);
     }
+
     return {
       dataInfo,
     }
   }
-  constructor({severity, application, timestamp, class_name, type, message, trace, span, thread, metadata, errors_infos, ip}){
+
+  constructor() {
     const logConfiguration = {
-      levels: consts_winstown.levels,
+      levels: levels,
       transports: [new winston.transports.Console()],
       format: winston.format.combine(winston.format.json()),
     };
+
     this.logger = winston.createLogger(logConfiguration);
-    const {dataInfo} = this.automaticInfos({ip});
-    this.severity = severity;
-    this.logContent = {
+  }
+
+  log({
+    severity,
+    application,
+    timestamp,
+    className,
+    type,
+    message,
+    data,
+    trace,
+    span,
+    thread,
+    metadata={},
+    errorsInfos,
+    ip
+  }){
+  const { dataInfo } = this.automaticInfos({ip});
+    const logContent = {
       application,
       timestamp,
-      class_name,
+      className,
       type,
-      errors_infos,
       trace,
       span,
+      data,
       metadata:{ ...dataInfo, ...metadata },
     }
-    if(message){
-      this.logContent.message = message
+
+    if (message) {
+      logContent.message = message;
     }
-    if(errors_infos){
-      this.logContent.errors_infos = errors_infos
+
+    if (Object.keys(errorsInfos).length) {
+      logContent.errorsInfos = errorsInfos;
     }
-    if(thread){
-      this.logContent.thread = thread
+
+    if (thread) {
+      logContent.thread = thread;
     }
-  }
-  log(){
-    this.logger[this.severity](this.logContent);
+    this.logger[severity](logContent);
   }
 }
 
