@@ -31,6 +31,7 @@ class NelsonRubensService {
     application,
     timestamp,
     className,
+    method,
     type,
     message,
     data,
@@ -55,6 +56,10 @@ class NelsonRubensService {
 
     if (message) {
       logContent.message = message;
+    }
+
+    if(method) {
+      logContent.method = method
     }
 
     if (Object.keys(errorsInfos).length) {
