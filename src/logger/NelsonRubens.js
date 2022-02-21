@@ -75,7 +75,7 @@ class NelsonRubens {
 
     const handledMetadata = this.#cleanAuthorizationHeader({ metadata });
 
-    if (!span) {
+    if (!span && span!==false) {
       span = `${this.application}-${this.className}-${this.timestamp}`;
     }
 
@@ -94,13 +94,16 @@ class NelsonRubens {
       data,
       errorsInfos,
       trace,
-      span,
       thread,
       metadata: handledMetadata,
       thread,
       ip,
       notify,
     };
+
+    if(span!==false){
+      dataLog.span = span
+    }
 
     this.service.log(dataLog);
 
